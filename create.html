@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create with Nova | Rishikesh Singh</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="stage" aria-hidden="true"><div class="ring ring-1"></div><div class="ring ring-3"></div><div class="glow"></div><div class="floor"></div></div>
+
+  <nav class="nav">
+    <a href="index.html" class="logo"><span class="logo-cube" aria-hidden="true"><span></span><span></span><span></span></span>Nova</a>
+    <div class="links"><a href="index.html">Home</a><a href="chat.html">Chat</a><a href="create.html">Create</a><a href="about.html">About</a></div>
+  </nav>
+
+  <main class="create-wrap">
+    <p class="eyebrow">Create</p>
+    <h1 style="font-size:2rem;font-weight:900;margin:8px 0 18px">Describe it, <span class="grad">see it</span></h1>
+    <div class="card">
+      <form class="field" id="imgForm">
+        <input type="text" id="prompt" placeholder="A neon city floating above the clouds at night" aria-label="Image prompt" maxlength="300" required />
+        <button class="btn btn-primary" type="submit">Generate</button>
+      </form>
+      <p class="note" id="status">Images come from a free public service and need no key.</p>
+      <div class="gallery" id="gallery"></div>
+    </div>
+  </main>
+
+  <footer class="footer">&copy; <span id="year"></span> Developed by <strong>Rishikesh Singh</strong></footer>
+  <script src="js/main.js"></script>
+  <script>
+    document.getElementById("imgForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const prompt = document.getElementById("prompt").value.trim();
+      const gallery = document.getElementById("gallery");
+      gallery.innerHTML = "";
+      document.getElementById("status").textContent = "Generating 3 variations...";
+      [1, 2, 3].forEach((seed) => {
+        const img = new Image();
+        img.alt = "AI image: " + prompt;
+        img.loading = "lazy";
+        img.onload = () => (document.getElementById("status").textContent = "Done. Click an image to open it full size.");
+        img.onclick = () => window.open(img.src, "_blank", "noopener");
+        img.src = "https://image.pollinations.ai/prompt/" + encodeURIComponent(prompt) + "?seed=" + seed + "&width=512&height=512&nologo=true";
+        gallery.appendChild(img);
+      });
+    });
+  </script>
+</body>
+</html>
